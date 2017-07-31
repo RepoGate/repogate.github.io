@@ -1,0 +1,82 @@
+<!-- Copyright 2017 Sean Kelleher. All rights reserved. -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://fonts.googleapis.com/css?family=Ubuntu" />
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <header>
+            <h1><a href="index.html">Repogate</a></h1>
+
+            <nav>
+                <ul>
+
+<li><a href="use.html">Use Cases</a></li>
+<li><a href="benefits.html">Benefits</a></li>
+<li><a href="security.html">Security</a></li>
+<li><a href="alternatives.html">Alternatives</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="contact.html">Contact</a></li>
+
+                </ul>
+            </nav>
+        </header>
+        <div>
+            <section id="main">
+<h2>Security</h2>
+
+<section>
+This page details current security shortcomings in RepoGate. The current
+workarounds for these is to avoid exposing RepoGate ports publicly (by using
+a firewall, VPN, or only exposing those ports locally), and to only use
+RepoGate to protect public repositories.
+<h3>Race Conditions</h3>
+
+<section>
+RepoGate makes use of tunnelling to gain more control over SCM
+primitives. For instance, git clone is tunnelled over a RepoGate
+socket. This allows for more control over the connection, and also
+allows for adding extra features to the connection, such as adding
+transport layer security to SCM connections that don't support it.
+However, RepoGate currently uses a naive approach to tunnelling that <a
+href="https://stackoverflow.com/questions/30824344/security-implications-of-a-socket-race-when-tunnelling-a-sub-command">
+suffers from a race condition</a>. The result is that, because linux TCP
+ports are global to all users, an attacker that has access to a host
+running a RepoGate deployment may be able to read repositories that are
+being sent through RepoGate connections without requiring elevated
+priviledges.
+</section>
+<h3>No Transport Layer Security</h3>
+
+<section>
+Because of the way it was designed (see above), RepoGate can add TLS/SSL
+to SCMs that don't currently support it. However, this functionality has
+not yet been added, and so communications are not currently encrypted.
+</section>
+<h3>Deployment Secrets</h3>
+
+<section>
+Master passwords for deployments are stored in plaintext in environment
+variables in both the HTTP and RepoGate server processes, meaning that
+they can be discovered by inspecting the environment variables for these
+processes, e.g. via `/proc`. In addition, these are exposed to tests
+that are run with this deployment (so that they can retrieve private
+data that may be needed for testing), so that any secrets stored by
+RepoGate can be discovered by anyone with the ability to run tests in
+that instance.
+</section>
+</section>
+
+            </section>
+        </div>
+        <footer>
+            Copyright 2017 Seán Kelleher. All rights reserved.
+        </footer>
+    </body>
+</html>

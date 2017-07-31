@@ -1,0 +1,173 @@
+<!-- Copyright 2017 Sean Kelleher. All rights reserved. -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://fonts.googleapis.com/css?family=Ubuntu" />
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <header>
+            <h1><a href="index.html">Repogate</a></h1>
+
+            <nav>
+                <ul>
+
+<li><a href="use.html">Use Cases</a></li>
+<li><a href="benefits.html">Benefits</a></li>
+<li><a href="security.html">Security</a></li>
+<li><a href="alternatives.html">Alternatives</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="contact.html">Contact</a></li>
+
+                </ul>
+            </nav>
+        </header>
+        <div>
+            <section id="main">
+<h2>Downloads</h2>
+
+<section>
+<a href="https://github.com/RepoGate/frg_releases/releases/tag/v0-f9550f9cbc5248b6d330ca924c1e2e28dd3917cb">
+v0-f9550f9cbc5248b6d330ca924c1e2e28dd3917cb
+</a>
+<h3>Disclaimer</h3>
+
+<section>
+<p>
+This program is free software. It comes without any warranty, to the
+extent permitted by applicable law.
+</p>
+<p class="warning">
+RepoGate currently has security shortcomings and so should not be public
+facing, and should only be used to protect public repositories. See the
+<a href="security.html">Security</a> page for more details.
+</p>
+</section>
+<h3>Early Shortcomings</h3>
+
+<section>
+<p>
+RepoGate can't currently handle projects with non-alphanumeric
+characters in the name, and can only handle committing to the "master"
+branch.
+</p>
+<p>
+RepoGate only supports Git repositories at present, but other SCMs may
+be supported if there is interest.
+</p>
+</section>
+<h3>Getting Started</h3>
+
+<section>
+Deploying directly to a repository hosted on GitHub or Bitbucket is
+not yet supported by RepoGate. Instead, a RepoGate deployment must be
+set up to act as a proxy for the hosted repository. There is a
+<a href="https://github.com/repogate/deploy">guide</a> for setting up a
+local RepoGate deployment, but the easiest way to get started is to run
+the "all-in-one" Docker deployment.
+</section>
+<h3>"All-in-one" Docker Deployment</h3>
+
+<section>
+<p>
+This deployment requires Docker and Git to be installed locally. Use the
+following command to start the deployment:
+</p>
+<pre>
+docker run -ti --name=repogate.allinone \
+&nbsp;&nbsp;&nbsp;&nbsp;-p 127.0.0.1:8080:8080 \
+&nbsp;&nbsp;&nbsp;&nbsp;-p 127.0.0.1:9000:9000 \
+&nbsp;&nbsp;&nbsp;&nbsp;-p 127.0.0.1:9418:9418 \
+&nbsp;&nbsp;&nbsp;&nbsp;repogate/allinone
+</pre>
+<p>
+This will start an all-in-one RepoGate deployment that provides a
+"read-only" Git service, a RepoGate service, and a minimal HTTP
+interface. It's important to use <code>127.0.0.1</code> as the local
+interface for now for security reasons (see <a
+href="security.html">Security</a> for details). You will be asked for a
+master password that will be used to secure repository passwords. There
+will be no output once you've given a password; all the services start
+and output from the HTTP server is forwarded to the host. you can now
+navigate to <a href="https://localhost:8080">https://localhost:8080</a>
+to access the minimal deployment interface.
+</p>
+<p>
+Add a project by entering the
+<a href="https://localhost:18080/projects">Projects</a> page and
+selecting <a href="https://localhost:18080/projects/add">Add</a>. Here
+you enter the details required by RepoGate to retrieve a project from a
+hosting service. Enter the username and password you use for the
+service, followed by the components of the project's address, and then
+submit. There is currently no error handling in the minimal interface;
+errors encountered while retrieving the repository will result in a
+server error and the project will have to be removed from the
+<a href="https://localhost:18080/projects">Projects</a> page (by
+entering the project and selecting `Delete`) before trying again. On
+success, you should be taken to the project screen for your new project
+and shown the `Logs` and `Delete` options. You may now clone and push to
+your project.
+</p>
+<p>
+You can clone your project from the all-in-one deployment, which
+contains a mirror of your project (don't supply a <code>.git</code>
+suffix):
+</p>
+<pre>
+git clone git://localhost/&lt;project-name&gt;
+</pre>
+<p>
+Initialise the repository for use with RepoGate using the
+<code>rg_init</code> script:
+</p>
+<pre>
+curl https://raw.githubusercontent.com/repogate/deploy/master/scripts/rg_init.sh \
+&nbsp;&nbsp;&nbsp;&nbsp;| sh
+git add .
+git commit -m "Initialised RepoGate"
+</pre>
+<p>
+<code>.rg/test</code>, which is added to your project when it's
+initialised, may contain a single-line bash command line that will be
+run as a test when pushing the project. Note that it currently uses the
+local environment to run tests in, so if the "all-in-one" Docker
+deployment is being used then only the limited number of commands
+available in that container can be used. The current workaround is to
+use <code>docker exec -it -u root repogate.allinone bash</code> to start
+a shell in the container and <code>apt-get</code> any required
+dependencies.
+</p>
+You can now push the project once it has been initialised.  Download the
+above binary (<code>frg</code> is the Friendly RepoGate interface to
+RepoGate), add it to your <code>PATH</code>, and push your project:
+</p>
+<pre>
+frg push --wall=127.0.0.1:9000 \
+&nbsp;&nbsp;&nbsp;&nbsp;--proj=&lt;project-name&gt;
+</pre>
+<p>
+The test in <code>.rg/test</code> will run in the environment, and the
+output will be streamed to the client. If the test fails then the
+changes will not be pushed, but on success they will be committed to the
+mirror repository in the deployment, and then forwarded on to the
+original hosted repository.
+</p>
+<p>
+Log files for the Git daemon, the RepoGate services, and the HTTP server
+are reachable from the home screen of the HTTP interface.
+</p>
+</section>
+</section>
+
+            </section>
+        </div>
+        <footer>
+            Copyright 2017 Seán Kelleher. All rights reserved.
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,106 @@
+<!-- Copyright 2017 Sean Kelleher. All rights reserved. -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://fonts.googleapis.com/css?family=Ubuntu" />
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <header>
+            <h1><a href="index.html">Repogate</a></h1>
+
+            <nav>
+                <ul>
+
+<li><a href="use.html">Use Cases</a></li>
+<li><a href="benefits.html">Benefits</a></li>
+<li><a href="security.html">Security</a></li>
+<li><a href="alternatives.html">Alternatives</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="contact.html">Contact</a></li>
+
+                </ul>
+            </nav>
+        </header>
+        <div>
+            <section id="main">
+<h2>Use Cases</h2>
+
+<section>
+<h3>Making Team Members More Accountable</h3>
+
+<section>
+It is sometimes the case that team members will push code that "works on
+my machine", but ultimately breaks the build. This can result in other
+team members having to pick up the slack, even when continuous
+integration identifies the individual that's responsible. RepoGate
+prevents this by rejecting any updates that break the build, meaning
+that team members must take the steps to fix their code before they can
+push those changes.
+</section>
+<h3>For Teams With High Inertia</h3>
+
+<section>
+<p>
+Different teams have different priorities, and it can often be difficult
+to keep up with the latest trends such as code review, continuous
+integration, or even using the latest tooling such as Git, which all
+require buy-in from all team members. RepoGate works around this in a
+number of ways.
+</p>
+<p>
+In contrast to Git and existing continuous integration tools, RepoGate
+is designed to adapt to your existing workflow and tooling, meaning a
+lower barrier to entry. Furthermore, it can prevent team members from
+pushing breaking code, so team members are forced to fix their code
+before they push it, avoiding the situation that sometimes arises with
+continuous integration where the build breaks but the team doesn't stop
+to fix it.
+</p>
+</section>
+<h3>For Solo Developers</h3>
+
+<section>
+When you're working on your own projects it can be frustrating when code
+you tested locally breaks when it's pushed, even because of something as
+simple as forgetting to commit a file. RepoGate lets you appease the
+perfectionist in you, and keep your builds green.
+</section>
+<h3>For Managing Outsourced Development</h3>
+
+<section>
+Managing an outsourced development team can pose many challenges. Team
+members can change without warning and need to be trained, code reviews
+need to be performed frequently to keep the standard of code quality up,
+and the responsibility of delivering the result often rests on one
+person. By making sure that only code that builds and passes tests
+actually makes it into the central codebase, repogate can be use to
+minimise the risks associated with managing teams. Furthermore, help
+messages and links to documentation and training material can be
+integrated into the response delivered back the development team, which
+means that less time needs to be spent on code reviews and retraining.
+</section>
+<h3>For Security</h3>
+
+<section>
+There have been many cases of private keys and passwords being pushed to
+public repositories. With RepoGate you can run checks for things like
+SSH keys and suspicious-looking password variables, and prevent such
+secrets from making their way into to the central repository in the
+first place, instead of having to scrub and rotate the secrets after the
+fact.
+</section>
+</section>
+
+            </section>
+        </div>
+        <footer>
+            Copyright 2017 Seán Kelleher. All rights reserved.
+        </footer>
+    </body>
+</html>

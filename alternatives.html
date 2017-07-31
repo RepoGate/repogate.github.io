@@ -1,0 +1,67 @@
+<!-- Copyright 2017 Sean Kelleher. All rights reserved. -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://fonts.googleapis.com/css?family=Ubuntu" />
+        <link rel="stylesheet" type="text/css" href="index.css" />
+    </head>
+    <body>
+        <header>
+            <h1><a href="index.html">Repogate</a></h1>
+
+            <nav>
+                <ul>
+
+<li><a href="use.html">Use Cases</a></li>
+<li><a href="benefits.html">Benefits</a></li>
+<li><a href="security.html">Security</a></li>
+<li><a href="alternatives.html">Alternatives</a></li>
+<li><a href="downloads.html">Downloads</a></li>
+<li><a href="contact.html">Contact</a></li>
+
+                </ul>
+            </nav>
+        </header>
+        <div>
+            <section id="main">
+<h2>Alternatives</h2>
+
+<section>
+<h3>Continuous Integration</h3>
+
+<section>
+The main problem that RepoGate tries to solve is "breaking the build".
+This is often solved by using continuous integration (testing the
+codebase after changes have been received) in combination with different
+workflows and utilities. GitFlow is probably the most widely-known
+workflow, and Git "mirror" repositories are used to merge non-breaking
+changes from a working copy of the repository to the mainline. While
+this functionally achieves the same result as RepoGate, there is a lot
+of overhead to this approach in terms of setup and complexity, and
+requires buy-in from all team members to adopt the new workflows, and
+perhaps tooling if Git isn't already being used. Furthermore, RepoGate
+can simplify workflows by allowing "dev"-type branches to be ignored.
+</section>
+<h3>Homu, Bors and Jenkins Pretested Integration</h3>
+
+<section>
+Pretested integration is a methodology where merges of Git branches are
+tested before they're committed. This is useful because even if the
+heads of branches aren't broken, merging them can cause failures, so
+pretested integration is used to prevent this. Pretested integration is
+orthogonal to RepoGate's pre-commit testing.
+</section>
+</section>
+
+            </section>
+        </div>
+        <footer>
+            Copyright 2017 Seán Kelleher. All rights reserved.
+        </footer>
+    </body>
+</html>
